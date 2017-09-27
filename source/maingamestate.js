@@ -9,6 +9,7 @@ mainGameState.preload = function() {
     console.log("Pre-loading the Game");
     this.game.load.image("space-bg", "assets/images/space-bg.jpg"); 
     this.game.load.image("player-ship", "assets/images/player-ship.png");
+    this.game.load.audio("music-bg", "assets/music/maingame.mp3");
   
 }
 
@@ -32,8 +33,11 @@ mainGameState.create = function() {
     game.physics.arcade.enable(this.playerShip);
     this.cursors = game.input.keyboard.createCursorKeys();
    
-  
-   
+    //game music
+        this.music = game.add.audio('music-bg');
+        this.music.play();
+        this.music.volume = 0.1;
+        this.music.loop = true;
     
 }
 
