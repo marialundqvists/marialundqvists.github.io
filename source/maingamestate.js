@@ -1,5 +1,8 @@
 //create an empty object
+ const playerShipSpeed = 200;
+
 var mainGameState = { }
+
 
 //Add the preloader function
 mainGameState.preload = function() {
@@ -28,7 +31,7 @@ mainGameState.create = function() {
     //support to press keys
     game.physics.arcade.enable(this.playerShip);
     this.cursors = game.input.keyboard.createCursorKeys();
-    
+   
   
    
     
@@ -36,25 +39,33 @@ mainGameState.create = function() {
 
 //Add the update function
 mainGameState.update = function() { 
-
-    //move player
-      if (this.cursors.right.isDown) {
-        console.log("RIGHT PRESSED");
-        this.playerShip.body.velocity.x = 200;
-      } else if (this.cursors.left.isDown) {
-              console.log("left pressed");
-              this.playerShip.body.velocity.x = -200;
-      } else {
-              console.log("no pressed");
-               this.playerShip.body.velocity.x = 0;
-      }
+ 
     
- //  confine player to the screen
-  if (this.playerShip.position.x < (0 + (this.playerShip.width/2)) && this.cursors.left.isDown) {
-      this.playerShip.body.velocity.x = 0;
-  }
-    
-if (this.playerShip.position.x > (game.width - (this.playerShip.width/2)) && this.cursors.right.isDown) {
-      this.playerShip.body.velocity.x = 0;
-  }
+    mainGameState.updatePlayer();
 }
+
+mainGameState.updatePlayer = function() {
+       
+    
+     //move player
+    if (this.cursors.right.isDown) {
+    console.log("RIGHT PRESSED");
+    this.playerShip.body.velocity.x = playerShipSpeed;
+    } else if (this.cursors.left.isDown) {
+          console.log("left pressed");
+          this.playerShip.body.velocity.x = -playerShipSpeed;
+    } else {
+          console.log("no pressed");
+           this.playerShip.body.velocity.x = 0;
+    }
+
+    //  confine player to the screen
+    if (this.playerShip.position.x < (0 + (this.playerShip.width/2)) && this.cursors.left.isDown) {
+    this.playerShip.body.velocity.x = 0;
+    }
+
+    if (this.playerShip.position.x > (game.width - (this.playerShip.width/2)) && this.cursors.right.isDown) {
+        this.playerShip.body.velocity.x = 0;
+    }
+}
+   
