@@ -37,7 +37,7 @@ mainGameState.create = function() {
 //Add the update function
 mainGameState.update = function() { 
 
-    //what happens when right and left is pressed on keyboard
+    //move player
       if (this.cursors.right.isDown) {
         console.log("RIGHT PRESSED");
         this.playerShip.body.velocity.x = 200;
@@ -48,4 +48,13 @@ mainGameState.update = function() {
               console.log("no pressed");
                this.playerShip.body.velocity.x = 0;
       }
+    
+ //  confine player to the screen
+  if (this.playerShip.position.x < (0 + (this.playerShip.width/2)) && this.cursors.left.isDown) {
+      this.playerShip.body.velocity.x = 0;
+  }
+    
+if (this.playerShip.position.x > (game.width - (this.playerShip.width/2)) && this.cursors.right.isDown) {
+      this.playerShip.body.velocity.x = 0;
+  }
 }
