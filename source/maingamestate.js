@@ -2,6 +2,7 @@
  const playerShipSpeed = 200;
 const minAstroidSpeed = 10;
 const maxAstroidSpeed = 250;
+const fireSpeed = -150;
 
 
 var mainGameState = { }
@@ -15,6 +16,7 @@ mainGameState.preload = function() {
     this.game.load.image("asteroid-s", "assets/images/asteroid-small-01.png");
     this.game.load.image("asteroid-xs", "assets/images/asteroid-small-02.png");
     this.game.load.image("asteroid-m", "assets/images/asteroid-medium-01.png");
+      this.game.load.image("fire", "assets/images/bullet-fire.png");
     this.game.load.audio("music-bg", "assets/music/maingame.mp3");
     
 }
@@ -24,20 +26,21 @@ mainGameState.create = function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
     game.add.sprite(0, 0, 'space-bg');
-    console.log(game.time.totalElapsedSeconds());
     
     //position of playership
     var playerX = game.width * 0.5;    
-    var playerY = game.height * 0.8;
+    var playerY = game.height * 0.9;
 
   
     this.playerShip = game.add.sprite(playerX, playerY, 'player-ship');
     this.playerShip.anchor.setTo(0.5, 0.5);
     
     
-    //support to press keys
+  
     game.physics.arcade.enable(this.playerShip);
+      //support to press keys
     this.cursors = game.input.keyboard.createCursorKeys();
+    this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
    
     //game music
         this.music = game.add.audio('music-bg');
@@ -60,24 +63,19 @@ mainGameState.update = function() {
      this.asteroidTimer -= game.time.physicsElapsed;
     
     if (this.asteroidTimer <= 0.0) {
-        console.log("spawn asteroids");
         this.spawnAsteroid();
         this.asteroidTimer = 2.0;
         }
-    console.log(game.time.physicsElapsed);
 }
 
 mainGameState.updatePlayer = function() {
     
      //move player
     if (this.cursors.right.isDown) {
-    console.log("RIGHT PRESSED");
     this.playerShip.body.velocity.x = playerShipSpeed;
     } else if (this.cursors.left.isDown) {
-          console.log("left pressed");
           this.playerShip.body.velocity.x = -playerShipSpeed;
     } else {
-          console.log("no pressed");
            this.playerShip.body.velocity.x = 0;
     }
 
@@ -97,6 +95,13 @@ mainGameState.updatePlayer = function() {
            }
         
    }
+    
+   
+    //fire
+    if (this.fireKey.isDown) {
+        console.log("fire PRESSED");
+        this.spawnPlayerBullet();
+    }
    
 }
 
@@ -114,4 +119,13 @@ mainGameState.spawnAsteroid = function() {
     this.asteroids.add(asteroid);
     
 } 
- 
+
+mainGameState.spawnPlayerBullet = function() {
+    //position of fire
+    var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 50), "fire");
+    fire.anchor.setTo(0.5, 0.5);
+
+    game.physics.arcade.enable(fire);
+    fire.body.velocity.setTo(0, fireSpeed);
+    
+} 
