@@ -1,15 +1,40 @@
 body {
     margin: 0px;
     padding: 0px;
-    background: #9cc4fe;
+    background: #ccc;
     
 }
 
-h1 { 
-    color: #dddddd;
-    background-color: #333333;
-}
 
 canvas {
     margin: 0 auto;
+}
+
+
+/*menu*/
+
+menu {
+    margin: 0;
+    left: 0;
+    padding: 0;
+    top: 0;
+    position: absolute;
+    background: white;
+    width: 100%;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.menu-list {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    padding: 0;
+    margin: 0;
 }

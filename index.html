@@ -1,16 +1,27 @@
 <html>
 <head>
-    <title>Penguin Game</title>
-      <link href="style.css" rel="stylesheet" type="text/css" />
-     <script src="libs/phaser.min.js"></script>
+    <title>Space Game</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="libs/phaser.min.js"></script>
+    <script src="source/maingamestate.js"></script>
 </head>
 <body>
+    <menu>
+        <ul class="menu-list">
+            <li><h1>Space Game</h1></li>
+            <li><p>A game developed by Maria Lundqvist</p></li>
+
+        </ul>
+    </menu>
     
     <div id="gameContainer"></div>
     
-   
-</body>
      <script>
-    var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameContainer');
+         var game = new Phaser.Game(400, 600, Phaser.AUTO, 'gameContainer');
+         
+         game.state.add("MainGame", mainGameState);
+         game.state.start("MainGame");
     </script>
+</body>
+   
 </html>
