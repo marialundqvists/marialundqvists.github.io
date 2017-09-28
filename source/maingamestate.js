@@ -173,10 +173,7 @@ mainGameState.updatePlayer = function() {
            }
         
    }
-    
-    if (this.playerLives <= 0) {
-        game.state.start("GameOver");
-        }
+ 
    
 }
 
