@@ -1,8 +1,8 @@
 //create an empty object
 const playerShipSpeed = 200;
-const minAstroidSpeed = 10;
-const maxAstroidSpeed = 250;
-const fireSpeed = -100;
+const minAstroidSpeed = 1;
+const maxAstroidSpeed = 280;
+const fireSpeed = -150;
 
 var playerScore = 0;
 
@@ -11,8 +11,8 @@ var mainGameState = { }
 
 //Add the preloader function
 mainGameState.preload = function() {
-    this.game.load.image("space-bg", "assets/images/space-bg.jpg"); 
-    this.game.load.image("player-ship", "assets/images/player-ship.png");
+    this.game.load.image("space-bg", "assets/images/sky-background.png"); 
+    this.game.load.image("player-ship", "assets/images/player-bird.png");
     this.game.load.image("asteroid-s", "assets/images/asteroid-small-01.png");
     this.game.load.image("asteroid-xs", "assets/images/asteroid-small-02.png");
     this.game.load.image("asteroid-m", "assets/images/asteroid-medium-01.png");
@@ -34,7 +34,10 @@ mainGameState.preload = function() {
 mainGameState.create = function() { 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
-    game.add.sprite(0, 0, 'space-bg');
+  //  game.add.sprite(0, 0, 'space-bg');
+     // Create a tilesprite (x, y, width, height, key)
+    tileSprite = game.add.tileSprite(0, 0, 800, 600, 'space-bg');
+  
     
     //position of playership
     var playerX = game.width * 0.5;    
@@ -59,7 +62,7 @@ mainGameState.create = function() {
         this.music.loop = true;
     
     //timer asteroids
-    this.asteroidTimer = 2.0;
+    this.asteroidTimer = 1.0;
     
     //timer fire
    
@@ -126,7 +129,7 @@ mainGameState.update = function() {
     
     if (this.asteroidTimer <= 0.0) {
         this.spawnAsteroid();
-        this.asteroidTimer = 2.0;
+        this.asteroidTimer = 1.0;
     }
     
     game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
@@ -148,6 +151,27 @@ mainGameState.update = function() {
       
     if (this.playerLives <= 0) {
         game.state.start("GameOver");
+    }
+    
+    
+    
+        // Move tilesprite position by pressing arrow keys
+    if (this.cursors.left.isDown)
+    {
+        tileSprite.tilePosition.x += 0;
+    }
+    else if (this.cursors.right.isDown)
+    {
+        tileSprite.tilePosition.x -= 0;
+    }
+
+    if (this.cursors.up.isDown)
+    {
+        tileSprite.tilePosition.y += 8;
+    }
+    else if (this.cursors.down.isDown)
+    {
+        tileSprite.tilePosition.y -= 0;
     }
 }
 
