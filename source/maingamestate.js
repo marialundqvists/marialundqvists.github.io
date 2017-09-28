@@ -2,7 +2,7 @@
  const playerShipSpeed = 200;
 const minAstroidSpeed = 10;
 const maxAstroidSpeed = 250;
-const fireSpeed = -150;
+const fireSpeed = -100;
 
 
 var mainGameState = { }
@@ -48,17 +48,25 @@ mainGameState.create = function() {
         this.music.volume = 0.1;
         this.music.loop = true;
     
-    //timer
+    //timer asteroids
     this.asteroidTimer = 2.0;
+    
+    //timer fire
+   
+    this.fireTimer = 0.4;
     
     //enemy group
     this.asteroids = game.add.group();
+    
+    //fire group
+    this.playerFire = game.add.group();
    
 }
 
 //Add the update function
 mainGameState.update = function() { 
     mainGameState.updatePlayer(); 
+     mainGameState.updatePlayerBullets();
     
      this.asteroidTimer -= game.time.physicsElapsed;
     
@@ -66,6 +74,9 @@ mainGameState.update = function() {
         this.spawnAsteroid();
         this.asteroidTimer = 2.0;
         }
+    
+    
+
 }
 
 mainGameState.updatePlayer = function() {
@@ -95,13 +106,6 @@ mainGameState.updatePlayer = function() {
            }
         
    }
-    
-   
-    //fire
-    if (this.fireKey.isDown) {
-        console.log("fire PRESSED");
-        this.spawnPlayerBullet();
-    }
    
 }
 
@@ -121,11 +125,34 @@ mainGameState.spawnAsteroid = function() {
 } 
 
 mainGameState.spawnPlayerBullet = function() {
-    //position of fire
+    if ( this.fireTimer < 0 ) {
+        this.fireTimer = 0.4;
+            //position of fire
     var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 50), "fire");
     fire.anchor.setTo(0.5, 0.5);
 
     game.physics.arcade.enable(fire);
     fire.body.velocity.setTo(0, fireSpeed);
     
+   this.playerFire.add(fire);
+    }
+
 } 
+
+mainGameState.updatePlayerBullets = function(){
+              //shoot fire
+    if (this.fireKey.isDown) {
+        console.log("fire PRESSED");
+        this.spawnPlayerBullet();
+    }
+    
+     this.fireTimer -= game.time.physicsElapsed;
+    
+   //clean up firebullets
+   for (var i = 0; i < this.playerFire.children.length; i++) {
+       if (this.playerFire.children[i].y < -200) {
+           this.playerFire.children[i].destroy();
+           }
+        
+   }  
+}
