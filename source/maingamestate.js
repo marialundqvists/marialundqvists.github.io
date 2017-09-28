@@ -4,12 +4,13 @@ const minAstroidSpeed = 10;
 const maxAstroidSpeed = 250;
 const fireSpeed = -100;
 
+var playerScore = 0;
+
 var mainGameState = { }
 
 
 //Add the preloader function
 mainGameState.preload = function() {
-    console.log("Pre-loading the Game");
     this.game.load.image("space-bg", "assets/images/space-bg.jpg"); 
     this.game.load.image("player-ship", "assets/images/player-ship.png");
     this.game.load.image("asteroid-s", "assets/images/asteroid-small-01.png");
@@ -89,7 +90,7 @@ mainGameState.create = function() {
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-02'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
     
-    this.playerScore = 0;
+    playerScore = 0;
     this.playerLives = 3;
     
     //score text
@@ -132,7 +133,7 @@ mainGameState.update = function() {
     game.physics.arcade.collide(this.asteroids, this.playerShip, mainGameState.onAsteroidPlayerCollide, null, this);   
     
     
-    this.scoreValue.setText(this.playerScore);
+    this.scoreValue.setText(playerScore);
     this.liveValue.setText(this.playerLives);
     
     if (this.dieTime > 0) {
@@ -143,7 +144,11 @@ mainGameState.update = function() {
             this.playerShip.alpha = 1.0;
         }
     }
-
+ 
+      
+    if (this.playerLives <= 0) {
+        game.state.start("GameOver");
+    }
 }
 
 mainGameState.updatePlayer = function() {
@@ -173,8 +178,7 @@ mainGameState.updatePlayer = function() {
            }
         
    }
- 
-   
+
 }
 
 mainGameState.spawnAsteroid = function() {
@@ -235,7 +239,7 @@ mainGameState.onAsteroidBulletCollide = function(object1, object2) {
         var index = game.rnd.integerInRange(0, this.asteroidHitSfx.length - 1);
         this.asteroidHitSfx[index].play();
     
-        this.playerScore += 1; 
+       playerScore += 1; 
 }
 
 mainGameState.onAsteroidPlayerCollide = function(object1, object2) {
