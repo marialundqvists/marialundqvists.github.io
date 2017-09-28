@@ -86,6 +86,17 @@ mainGameState.create = function() {
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-02'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
    
+var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
+
+    this.scoreTitle = game.add.text(game.width * 0.85, 30, "SCORE", textStyle);
+    this.scoreTitle.fixedToCamera = true;
+    this.scoreTitle.anchor.setTo(0.5, 0.5);
+
+    this.scoreValue = game.add.text(game.width * 0.75, 30, "0", textStyle);
+    this.scoreValue.fixedToCamera = true;
+    this.scoreValue.anchor.setTo(0.5, 0.5);
+
+    this.playerScore = 0;
 }
 
 //Add the update function
@@ -101,6 +112,8 @@ mainGameState.update = function() {
         }
     
     game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
+    
+    this.scoreValue.setText(this.playerScore);
 
 }
 
@@ -191,4 +204,6 @@ mainGameState.onAsteroidBulletCollide = function(asteroid, playerFire) {
        
        var index = game.rnd.integerInRange(0, this.asteroidHitSfx.length - 1);
         this.asteroidHitSfx[index].play();
+    
+    this.playerScore += 1; 
 }
