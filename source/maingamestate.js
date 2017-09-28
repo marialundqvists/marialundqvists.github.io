@@ -1,9 +1,8 @@
 //create an empty object
- const playerShipSpeed = 200;
+const playerShipSpeed = 200;
 const minAstroidSpeed = 10;
 const maxAstroidSpeed = 250;
 const fireSpeed = -100;
-
 
 var mainGameState = { }
 
@@ -47,6 +46,7 @@ mainGameState.create = function() {
     
   
     game.physics.arcade.enable(this.playerShip);
+    this.playerShip.body.immovable = true;
       //support to press keys
     this.cursors = game.input.keyboard.createCursorKeys();
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -63,6 +63,9 @@ mainGameState.create = function() {
     //timer fire
    
     this.fireTimer = 0.4;
+    
+    //invornability time
+    this.dieTime = 0.0;
     
     //enemy group
     this.asteroids = game.add.group();
@@ -87,7 +90,7 @@ mainGameState.create = function() {
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
     
     this.playerScore = 0;
-    this.playerLives = 5;
+    this.playerLives = 3;
     
     //score text
     var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
@@ -100,7 +103,15 @@ mainGameState.create = function() {
     this.scoreValue.fixedToCamera = true;
     this.scoreValue.anchor.setTo(0.5, 0.5);
     
-    
+    //live text
+  
+    this.liveTitle = game.add.text(game.width * 0.18, 30, "LIVE", textStyle);
+    this.liveTitle.fixedToCamera = true;
+    this.liveTitle.anchor.setTo(0.5, 0.5);
+
+    this.liveValue = game.add.text(game.width * 0.1, 30, "5", textStyle);
+    this.liveValue.fixedToCamera = true;
+    this.liveValue.anchor.setTo(0.5, 0.5);
 
   
 }
@@ -115,12 +126,23 @@ mainGameState.update = function() {
     if (this.asteroidTimer <= 0.0) {
         this.spawnAsteroid();
         this.asteroidTimer = 2.0;
-        }
+    }
     
     game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
+    game.physics.arcade.collide(this.asteroids, this.playerShip, mainGameState.onAsteroidPlayerCollide, null, this);   
     
     
     this.scoreValue.setText(this.playerScore);
+    this.liveValue.setText(this.playerLives);
+    
+    if (this.dieTime > 0) {
+        this.playerShip.alpha = 0.5;
+        this.dieTime -= game.time.elapsed;
+        
+        if ( this.dieTime < 0 ) {
+            this.playerShip.alpha = 1.0;
+        }
+    }
 
 }
 
@@ -151,6 +173,10 @@ mainGameState.updatePlayer = function() {
            }
         
    }
+    
+    if (this.playerLives <= 0) {
+        game.state.start("GameOver");
+        }
    
 }
 
@@ -205,12 +231,31 @@ mainGameState.updatePlayerBullets = function() {
    }  
 }
 
-mainGameState.onAsteroidBulletCollide = function(asteroid, playerFire) {
-       asteroid.pendingDestroy = true;
-        playerFire.pendingDestroy = true;
+mainGameState.onAsteroidBulletCollide = function(object1, object2) {
+        object1.pendingDestroy = true;
+        object2.pendingDestroy = true;
        
-       var index = game.rnd.integerInRange(0, this.asteroidHitSfx.length - 1);
+        var index = game.rnd.integerInRange(0, this.asteroidHitSfx.length - 1);
         this.asteroidHitSfx[index].play();
     
-    this.playerScore += 1; 
+        this.playerScore += 1; 
+}
+
+mainGameState.onAsteroidPlayerCollide = function(object1, object2) {
+    if (object1.key.includes("asteroid") ) {
+        object1.pendingDestroy = true;
+    } else {
+        object2.pendingDestroy = true;
+    }
+        
+       
+    var index = game.rnd.integerInRange(0, this.asteroidDeathSfx.length - 1);
+   this.asteroidDeathSfx[index].play();
+    
+    this.playerLives -= 1; 
+    
+    if (this.dieTime > 0) {
+        return;
+    }
+    this.dieTime = 3.0;
 }

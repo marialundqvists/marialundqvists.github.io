@@ -4,6 +4,7 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
     <script src="libs/phaser.min.js"></script>
     <script src="source/maingamestate.js"></script>
+    <script src="source/gameoverstate.js"></script>
 </head>
 <body>
     
@@ -14,6 +15,7 @@
          
          game.state.add("MainGame", mainGameState);
          game.state.start("MainGame");
+         game.state.add("GameOver", gameOverState);
     </script>
 </body>
    
