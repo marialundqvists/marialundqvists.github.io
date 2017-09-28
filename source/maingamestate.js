@@ -16,8 +16,17 @@ mainGameState.preload = function() {
     this.game.load.image("asteroid-s", "assets/images/asteroid-small-01.png");
     this.game.load.image("asteroid-xs", "assets/images/asteroid-small-02.png");
     this.game.load.image("asteroid-m", "assets/images/asteroid-medium-01.png");
-      this.game.load.image("fire", "assets/images/bullet-fire.png");
+    this.game.load.image("fire", "assets/images/bullet-fire.png");
     this.game.load.audio("music-bg", "assets/music/maingame.mp3");
+    this.game.load.audio("player-fire-01", "assets/audio/player_fire_01.mp3");
+    this.game.load.audio("player-fire-02", "assets/audio/player_fire_02.mp3");
+    this.game.load.audio("player-fire-03", "assets/audio/player_fire_03.mp3");
+    this.game.load.audio("asteroid-hit-01", "assets/audio/asteroid_hit_01.mp3");
+    this.game.load.audio("asteroid-hit-02", "assets/audio/asteroid_hit_02.mp3");
+    this.game.load.audio("asteroid-hit-03", "assets/audio/asteroid_hit_03.mp3");
+    this.game.load.audio("asteroid-death-01", "assets/audio/asteroid_death_01.mp3");
+    this.game.load.audio("asteroid-death-02", "assets/audio/asteroid_death_02.mp3");
+    this.game.load.audio("asteroid-death-03", "assets/audio/asteroid_death_03.mp3");
     
 }
 
@@ -60,6 +69,22 @@ mainGameState.create = function() {
     
     //fire group
     this.playerFire = game.add.group();
+    
+    //sound effect
+    this.playerFireSfx = [];
+    this.playerFireSfx.push(game.add.audio('player-fire-01'));
+    this.playerFireSfx.push(game.add.audio('player-fire-02'));
+    this.playerFireSfx.push(game.add.audio('player-fire-03'));
+    
+    this.asteroidHitSfx = [];
+    this.asteroidHitSfx.push(game.add.audio('asteroid-hit-01'));
+    this.asteroidHitSfx.push(game.add.audio('asteroid-hit-02'));
+    this.asteroidHitSfx.push(game.add.audio('asteroid-hit-03'));
+  
+    this.asteroidDeathSfx = [];
+    this.asteroidDeathSfx.push(game.add.audio('asteroid-death-01'));
+    this.asteroidDeathSfx.push(game.add.audio('asteroid-death-02'));
+    this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
    
 }
 
@@ -135,6 +160,9 @@ mainGameState.spawnPlayerBullet = function() {
     fire.body.velocity.setTo(0, fireSpeed);
     
    this.playerFire.add(fire);
+        
+    var index = game.rnd.integerInRange(0, this.playerFireSfx.length - 1);
+     this.playerFireSfx[index].play();
     }
 
 } 
@@ -160,4 +188,7 @@ mainGameState.updatePlayerBullets = function() {
 mainGameState.onAsteroidBulletCollide = function(asteroid, playerFire) {
        asteroid.pendingDestroy = true;
         playerFire.pendingDestroy = true;
+       
+       var index = game.rnd.integerInRange(0, this.asteroidHitSfx.length - 1);
+        this.asteroidHitSfx[index].play();
 }
