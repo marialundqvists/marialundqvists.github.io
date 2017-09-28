@@ -75,7 +75,7 @@ mainGameState.update = function() {
         this.asteroidTimer = 2.0;
         }
     
-    
+    game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
 
 }
 
@@ -139,7 +139,7 @@ mainGameState.spawnPlayerBullet = function() {
 
 } 
 
-mainGameState.updatePlayerBullets = function(){
+mainGameState.updatePlayerBullets = function() {
               //shoot fire
     if (this.fireKey.isDown) {
         console.log("fire PRESSED");
@@ -155,4 +155,9 @@ mainGameState.updatePlayerBullets = function(){
            }
         
    }  
+}
+
+mainGameState.onAsteroidBulletCollide = function(asteroid, playerFire) {
+       asteroid.pendingDestroy = true;
+        playerFire.pendingDestroy = true;
 }
