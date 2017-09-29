@@ -58,7 +58,11 @@ mainGameState.create = function() {
 
     
     //timer asteroids
-    this.asteroidTimer = 1.0;
+    this.asteroidTimer = 2.0;
+    
+    this.timePerAsteroid = 1.0;
+    
+    this.dificultTimer = 10.0;
     
     //timer fire
    
@@ -134,12 +138,20 @@ mainGameState.update = function() {
     mainGameState.updatePlayer(); 
      mainGameState.updatePlayerBullets();
     
+    
+    if (this.asteroidTimer <= 0) {
+        this.spawnAsteroid();
+        this.asteroidTimer = this.timePerAsteroid;
+    }
+    
      this.asteroidTimer -= game.time.physicsElapsed;
     
-    if (this.asteroidTimer <= 0.0) {
+    if (this.dificultTimer <= 0) {
         this.spawnAsteroid();
-        this.asteroidTimer = 0.8;
+        this.dificultTimer = this.timePerAsteroid;
     }
+    
+     this.dificultTimer -= game.time.physicsElapsed;
     
     game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
     game.physics.arcade.collide(this.asteroids, this.playerShip, mainGameState.onAsteroidPlayerCollide, null, this);   
@@ -161,7 +173,6 @@ mainGameState.update = function() {
     if (this.playerLives <= 0) {
         game.state.start("GameOver");
     }
-    
     
     
         // Move tilesprite position by pressing arrow keys
@@ -232,7 +243,7 @@ mainGameState.spawnAsteroid = function() {
 
 mainGameState.spawnPlayerBullet = function() {
     if ( this.fireTimer < 0 ) {
-        this.fireTimer = 0.6;
+        this.fireTimer = 0.4;
             //position of fire
     var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 60), "fire");
     fire.anchor.setTo(0.5, 0.5);
