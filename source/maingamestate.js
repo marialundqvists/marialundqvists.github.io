@@ -11,7 +11,7 @@ var mainGameState = { }
 
 //Add the preloader function
 mainGameState.preload = function() {
-    this.game.load.image("space-bg", "assets/images/sky-background.png"); 
+    this.game.load.image("space-bg", "assets/images/sky-background.jpg"); 
     this.game.load.image("player-ship", "assets/images/player-bird.png");
      this.game.load.image("player-ship-dead", "assets/images/player-bird-dead.png");
     this.game.load.image("asteroid-s", "assets/images/rain_01.png");

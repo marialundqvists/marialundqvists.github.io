@@ -1,7 +1,7 @@
 var gameOverState = { }
 
 gameOverState.preload = function() {
-    this.game.load.image("space-bg-game-over", "assets/images/sky-background-game-over.png"); 
+    this.game.load.image("space-bg-game-over", "assets/images/sky-background-game-over.jpg"); 
     this.game.load.image("player-ship-dead", "assets/images/player-bird-dead.png");
 }
 

@@ -1,7 +1,7 @@
 var startGameState = { }
 
 startGameState.preload = function() {
-    this.game.load.image("space-bg", "assets/images/sky-background.png"); 
+    this.game.load.image("space-bg", "assets/images/sky-background.jpg"); 
     this.game.load.image("player-ship", "assets/images/player-bird.png");
     this.game.load.image("move", "assets/images/move.png");
     this.game.load.image("shoot", "assets/images/z.png");
