@@ -1,7 +1,7 @@
 //create an empty object
 const playerShipSpeed = 200;
 const minAstroidSpeed = 50;
-const maxAstroidSpeed = 290;
+const maxAstroidSpeed = 250;
 const fireSpeed = -150;
 
 var playerScore = 0;
@@ -33,7 +33,7 @@ mainGameState.preload = function() {
 //Add the create function
 mainGameState.create = function() { 
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    
+   
   //  game.add.sprite(0, 0, 'space-bg');
      // Create a tilesprite (x, y, width, height, key)
     tileSprite = game.add.tileSprite(0, 0, 800, 600, 'space-bg');
@@ -46,8 +46,6 @@ mainGameState.create = function() {
     this.playerShip = game.add.sprite(playerX, playerY, 'player-ship');
 
     this.playerShip.anchor.setTo(0.5, 0.5);
-    
-    
   
     game.physics.arcade.enable(this.playerShip);
     this.playerShip.body.immovable = true;
@@ -122,7 +120,7 @@ mainGameState.create = function() {
     
     //live text
   
-    this.liveTitle = game.add.text(game.width * 0.14, 40, "LIFE", textStyle);
+    this.liveTitle = game.add.text(game.width * 0.14, 40, "LIVES", textStyle);
     this.liveTitle.fixedToCamera = true;
     this.liveTitle.anchor.setTo(0.5, 0.5);
 
