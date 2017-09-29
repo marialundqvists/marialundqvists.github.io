@@ -13,10 +13,11 @@ var mainGameState = { }
 mainGameState.preload = function() {
     this.game.load.image("space-bg", "assets/images/sky-background.png"); 
     this.game.load.image("player-ship", "assets/images/player-bird.png");
-    this.game.load.image("asteroid-s", "assets/images/asteroid-small-01.png");
-    this.game.load.image("asteroid-xs", "assets/images/asteroid-small-02.png");
-    this.game.load.image("asteroid-m", "assets/images/asteroid-medium-01.png");
-    this.game.load.image("fire", "assets/images/bullet-fire.png");
+     this.game.load.image("player-ship-dead", "assets/images/player-bird-dead.png");
+    this.game.load.image("asteroid-s", "assets/images/rain_01.png");
+    this.game.load.image("asteroid-xs", "assets/images/rain_02.png");
+    this.game.load.image("asteroid-m", "assets/images/leaf.png");
+    this.game.load.image("fire", "assets/images/flower-fire.png");
     this.game.load.audio("music-bg", "assets/music/maingame.mp3");
     this.game.load.audio("player-fire-01", "assets/audio/player_fire_01.mp3");
     this.game.load.audio("player-fire-02", "assets/audio/player_fire_02.mp3");
@@ -43,8 +44,8 @@ mainGameState.create = function() {
     var playerX = game.width * 0.5;    
     var playerY = game.height * 0.9;
 
-  
     this.playerShip = game.add.sprite(playerX, playerY, 'player-ship');
+
     this.playerShip.anchor.setTo(0.5, 0.5);
     
     
@@ -58,7 +59,7 @@ mainGameState.create = function() {
     //game music
         this.music = game.add.audio('music-bg');
         this.music.play();
-        this.music.volume = 0.1;
+        this.music.volume = 0.4;
         this.music.loop = true;
     
     //timer asteroids
@@ -82,16 +83,19 @@ mainGameState.create = function() {
     this.playerFireSfx.push(game.add.audio('player-fire-01'));
     this.playerFireSfx.push(game.add.audio('player-fire-02'));
     this.playerFireSfx.push(game.add.audio('player-fire-03'));
+     this.playerFireSfx.volume = 0.1;
     
     this.asteroidHitSfx = [];
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-01'));
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-02'));
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-03'));
+         this.asteroidHitSfx.volume = 0.1;
   
     this.asteroidDeathSfx = [];
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-01'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-02'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
+         this.asteroidDeathSfx.volume = 0.1;
     
     playerScore = 0;
     this.playerLives = 3;
@@ -99,21 +103,21 @@ mainGameState.create = function() {
     //score text
     var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
 
-    this.scoreTitle = game.add.text(game.width * 0.85, 30, "SCORE", textStyle);
+    this.scoreTitle = game.add.text(game.width * 0.85, 40, "SCORE", textStyle);
     this.scoreTitle.fixedToCamera = true;
     this.scoreTitle.anchor.setTo(0.5, 0.5);
 
-    this.scoreValue = game.add.text(game.width * 0.75, 30, "0", textStyle);
+    this.scoreValue = game.add.text(game.width * 0.85, 21, "0", textStyle);
     this.scoreValue.fixedToCamera = true;
     this.scoreValue.anchor.setTo(0.5, 0.5);
     
     //live text
   
-    this.liveTitle = game.add.text(game.width * 0.18, 30, "LIVE", textStyle);
+    this.liveTitle = game.add.text(game.width * 0.14, 40, "LIFE", textStyle);
     this.liveTitle.fixedToCamera = true;
     this.liveTitle.anchor.setTo(0.5, 0.5);
 
-    this.liveValue = game.add.text(game.width * 0.1, 30, "5", textStyle);
+    this.liveValue = game.add.text(game.width * 0.14, 21, "5", textStyle);
     this.liveValue.fixedToCamera = true;
     this.liveValue.anchor.setTo(0.5, 0.5);
 
@@ -224,7 +228,7 @@ mainGameState.spawnPlayerBullet = function() {
     if ( this.fireTimer < 0 ) {
         this.fireTimer = 0.4;
             //position of fire
-    var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 50), "fire");
+    var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 60), "fire");
     fire.anchor.setTo(0.5, 0.5);
 
     game.physics.arcade.enable(fire);
@@ -280,6 +284,7 @@ mainGameState.onAsteroidPlayerCollide = function(object1, object2) {
     this.playerLives -= 1; 
     
     if (this.dieTime > 0) {
+        
         return;
     }
     this.dieTime = 3.0;
