@@ -26,6 +26,9 @@ gameOverState.create = function() {
      var description = game.add.text(game.width * 0.15, game.height * 0.85, "Press SPACE to play and beat your score.",textStyleSmall);
     scoreTitle.anchor.setTo(0.5, 0.5);
     
+      var description2 = game.add.text(game.width * 0.20, game.height * 0.90, "Press ENTER for game instructions.",textStyleSmall);
+        scoreTitle.anchor.setTo(0.5, 0.5);
+    
 
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
      this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);

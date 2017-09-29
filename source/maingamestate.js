@@ -1,7 +1,7 @@
 //create an empty object
 const playerShipSpeed = 200;
-const minAstroidSpeed = 1;
-const maxAstroidSpeed = 280;
+const minAstroidSpeed = 50;
+const maxAstroidSpeed = 290;
 const fireSpeed = -150;
 
 var playerScore = 0;
@@ -18,7 +18,6 @@ mainGameState.preload = function() {
     this.game.load.image("asteroid-xs", "assets/images/rain_02.png");
     this.game.load.image("asteroid-m", "assets/images/leaf.png");
     this.game.load.image("fire", "assets/images/flower-fire.png");
-    this.game.load.audio("music-bg", "assets/music/maingame.mp3");
     this.game.load.audio("player-fire-01", "assets/audio/player_fire_01.mp3");
     this.game.load.audio("player-fire-02", "assets/audio/player_fire_02.mp3");
     this.game.load.audio("player-fire-03", "assets/audio/player_fire_03.mp3");
@@ -56,11 +55,7 @@ mainGameState.create = function() {
     this.cursors = game.input.keyboard.createCursorKeys();
     this.fireKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
    
-    //game music
-        this.music = game.add.audio('music-bg');
-        this.music.play();
-        this.music.volume = 0.4;
-        this.music.loop = true;
+
     
     //timer asteroids
     this.asteroidTimer = 1.0;
@@ -83,19 +78,29 @@ mainGameState.create = function() {
     this.playerFireSfx.push(game.add.audio('player-fire-01'));
     this.playerFireSfx.push(game.add.audio('player-fire-02'));
     this.playerFireSfx.push(game.add.audio('player-fire-03'));
-     this.playerFireSfx.volume = 0.1;
+    
+    for (var i = 0; i < 3 ; i++) {
+        this.playerFireSfx[i].volume = 0.1
+    }
     
     this.asteroidHitSfx = [];
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-01'));
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-02'));
     this.asteroidHitSfx.push(game.add.audio('asteroid-hit-03'));
-         this.asteroidHitSfx.volume = 0.1;
+    
+    for (var i = 0; i < 3 ; i++) {
+        this.asteroidHitSfx[i].volume = 0.1
+    }
   
     this.asteroidDeathSfx = [];
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-01'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-02'));
     this.asteroidDeathSfx.push(game.add.audio('asteroid-death-03'));
-         this.asteroidDeathSfx.volume = 0.1;
+    this.asteroidDeathSfx.volume = 0.1;
+    
+    for (var i = 0; i < 3 ; i++) {
+        this.asteroidDeathSfx[i].volume = 0.01
+    }
     
     playerScore = 0;
     this.playerLives = 3;
@@ -133,7 +138,7 @@ mainGameState.update = function() {
     
     if (this.asteroidTimer <= 0.0) {
         this.spawnAsteroid();
-        this.asteroidTimer = 1.0;
+        this.asteroidTimer = 0.8;
     }
     
     game.physics.arcade.collide(this.asteroids, this.playerFire, mainGameState.onAsteroidBulletCollide, null, this);
@@ -222,11 +227,12 @@ mainGameState.spawnAsteroid = function() {
     
     this.asteroids.add(asteroid);
     
+    
 } 
 
 mainGameState.spawnPlayerBullet = function() {
     if ( this.fireTimer < 0 ) {
-        this.fireTimer = 0.4;
+        this.fireTimer = 0.6;
             //position of fire
     var fire = game.add.sprite(this.playerShip.position.x, (this.playerShip.position.y - 60), "fire");
     fire.anchor.setTo(0.5, 0.5);
